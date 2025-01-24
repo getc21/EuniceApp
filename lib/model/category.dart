@@ -20,4 +20,9 @@ class Category {
       description: map['description'],
     );
   }
+
+  @override
+  String toString() {
+    return 'Category{id: $id, name: $name, description: $description}';
+  }
 }

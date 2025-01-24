@@ -1,6 +1,8 @@
 import 'package:eunice_app/database/db_provider.dart';
+import 'package:eunice_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eunice_app/model/supplier.dart';
+import 'package:get/get.dart';
 
 class AddSupplier extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -8,8 +10,9 @@ class AddSupplier extends StatelessWidget {
   final TextEditingController _contactNameController = TextEditingController();
   final TextEditingController _contactEmailController = TextEditingController();
   final TextEditingController _contactPhoneController = TextEditingController();
-  final TextEditingController _contactAddressController = TextEditingController();
-  
+  final TextEditingController _contactAddressController =
+      TextEditingController();
+
   AddSupplier({super.key});
 
   @override
@@ -29,7 +32,8 @@ class AddSupplier extends StatelessWidget {
             ),
             TextFormField(
               controller: _contactNameController,
-              decoration: InputDecoration(labelText: 'Contact Name Information'),
+              decoration:
+                  InputDecoration(labelText: 'Contact Name Information'),
               validator: (value) => value?.isEmpty ?? true
                   ? 'Contact information is required'
                   : null,
@@ -37,7 +41,8 @@ class AddSupplier extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               controller: _contactEmailController,
-              decoration: InputDecoration(labelText: 'Contact Email Information'),
+              decoration:
+                  InputDecoration(labelText: 'Contact Email Information'),
               validator: (value) => value?.isEmpty ?? true
                   ? 'Contact information is required'
                   : null,
@@ -45,14 +50,16 @@ class AddSupplier extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.phone,
               controller: _contactPhoneController,
-              decoration: InputDecoration(labelText: 'Contact Phone Information'),
+              decoration:
+                  InputDecoration(labelText: 'Contact Phone Information'),
               validator: (value) => value?.isEmpty ?? true
                   ? 'Contact information is required'
                   : null,
             ),
             TextFormField(
               controller: _contactAddressController,
-              decoration: InputDecoration(labelText: 'Contact Address Information'),
+              decoration:
+                  InputDecoration(labelText: 'Contact Address Information'),
               validator: (value) => value?.isEmpty ?? true
                   ? 'Contact information is required'
                   : null,
@@ -80,7 +87,7 @@ class AddSupplier extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Supplier saved successfully!')),
                 );
-                Navigator.of(context).pop(); // Cerrar el diálogo
+                Get.to(HomePage()); // Cerrar el diálogo
               } else {
                 // Si no se guardó, mostrar un mensaje de error
                 ScaffoldMessenger.of(context).showSnackBar(

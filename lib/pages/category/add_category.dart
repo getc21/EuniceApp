@@ -1,6 +1,8 @@
 import 'package:eunice_app/database/db_provider.dart';
+import 'package:eunice_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eunice_app/model/category.dart';
+import 'package:get/get.dart';
 
 class AddCategory extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -27,9 +29,8 @@ class AddCategory extends StatelessWidget {
             TextFormField(
               controller: _descriptionController,
               decoration: InputDecoration(labelText: 'Description'),
-              validator: (value) => value?.isEmpty ?? true
-                  ? 'Description is required'
-                  : null,
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'Description is required' : null,
             ),
           ],
         ),
@@ -46,7 +47,7 @@ class AddCategory extends StatelessWidget {
               // Guardar en la base de datos local
               await DBProvider().insertCategory(newCategory);
 
-              Navigator.of(context).pop();
+              Get.to(HomePage());
             }
           },
           child: Text('Save'),

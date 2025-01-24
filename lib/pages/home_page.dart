@@ -33,65 +33,63 @@ class HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-
-    // Asegúrate de que la base de datos esté creada
-    DBProvider().database.then((db) {
-      print("Base de datos inicializada");
-      _openDatabase();
-    });
+    _initializeDatabase();
   }
 
   // Abre la base de datos SQLite
-  _openDatabase() async {
-    _database = await openDatabase('app_database.db', version: 1,
-        onCreate: (db, version) {
-      // Crear tablas aquí si es necesario
-    });
+  Future<void> _initializeDatabase() async {
+    _database = await DBProvider().database;
     await _fetchData();
   }
 
   // Fetch datos de la base de datos
- _fetchData() async {
-  print("Fetching data...");
-  
-  var productsList = await _database.query('products');
-  print("Productos: $productsList");
-  
-  var categoriesList = await _database.query('categories');
-  print("Categories: $categoriesList");
-  
-  var suppliersList = await _database.query('suppliers');
-  print("Supplier: $suppliersList");
-  
-  var ordersList = await _database.query('orders');
-  print("Order: $ordersList");
+  Future<void> _fetchData() async {
+    try {
+      print("Fetching data...");
 
-  setState(() {
-    _products = productsList.map((item) => Product.fromMap(item)).toList();
-    _categories = categoriesList.map((item) => Category.fromMap(item)).toList();
-    _suppliers = suppliersList.map((item) => Supplier.fromMap(item)).toList();
-    _orders = ordersList.map((item) => Order.fromMap(item)).toList();
-  });
-}
+      var productsList = await _database.query('products');
+      print("Productos: $productsList");
 
+      var categoriesList = await _database.query('categories');
+      print("Categories: $categoriesList");
+
+      var suppliersList = await _database.query('suppliers');
+      print("Supplier: $suppliersList");
+
+      var ordersList = await _database.query('orders');
+      print("Order: $ordersList");
+
+      setState(() {
+        _products = productsList.map((item) => Product.fromMap(item)).toList();
+        _categories =
+            categoriesList.map((item) => Category.fromMap(item)).toList();
+        _suppliers =
+            suppliersList.map((item) => Supplier.fromMap(item)).toList();
+        _orders = ordersList.map((item) => Order.fromMap(item)).toList();
+      });
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
+  }
 
   // Crear un ListView para cada entidad
   Widget _buildListView(List items, String entityName) {
-  print('Displaying list for $entityName');
-  return ListView.builder(
-    itemCount: items.length,
-    itemBuilder: (context, index) {
-      var item = items[index];
-      return ListTile(
-        title: Text(item.toString()),  // Aquí se usará toString() para mostrar la información del objeto
-        onTap: () {
-          // Acción al seleccionar el elemento (por ejemplo, editar)
-          _editEntity(entityName);
-        },
-      );
-    },
-  );
-}
+    print('Displaying list for $entityName');
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        var item = items[index];
+        return ListTile(
+          title: Text(item
+              .toString()), // Aquí se usará toString() para mostrar la información del objeto
+          onTap: () {
+            // Acción al seleccionar el elemento (por ejemplo, editar)
+            _editEntity(entityName);
+          },
+        );
+      },
+    );
+  }
 
   void _addEntity(String entityName) {
     // Mapa de rutas

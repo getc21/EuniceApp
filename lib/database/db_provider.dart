@@ -42,9 +42,9 @@ class DBProvider {
         price REAL NOT NULL,
         weight REAL,
         dimensions TEXT,
-        category_id INTEGER,
-        supplier_id INTEGER,
-        stock_quantity INTEGER NOT NULL DEFAULT 0
+        category_id INTEGER NOT NULL,
+        supplier_id INTEGER NOT NULL,
+        stock_quantity INTEGER NOT NULL
       );
     ''');
     log('Tabla "products" creada con éxito.', name: 'DBProvider');
@@ -164,6 +164,19 @@ class DBProvider {
     final db = await database;
     return await db.insert(
         'suppliers', supplier.toMap()); // Cambiado a 'suppliers'
+  }
+
+
+  Future<List<Category>> getCategories() async {
+    final db = await database;
+    final res = await db.query('categories');
+    return res.isNotEmpty ? res.map((c) => Category.fromMap(c)).toList() : [];
+  }
+
+  Future<List<Supplier>> getSuppliers() async {
+    final db = await database;
+    final res = await db.query('suppliers');
+    return res.isNotEmpty ? res.map((s) => Supplier.fromMap(s)).toList() : [];
   }
 
   Future<void> closeDB() async {

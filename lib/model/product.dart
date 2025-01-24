@@ -3,7 +3,7 @@ class Product {
   String name;
   String? description;
   double price;
-  double? weight;
+  double weight;
   String? dimensions;
   int? categoryId;
   int? supplierId;
@@ -14,8 +14,8 @@ class Product {
     required this.name,
     this.description,
     required this.price,
-    this.weight,
-    this.dimensions,
+    this.weight = 0.0, // Valor por defecto
+    this.dimensions = '', // Valor por defecto
     this.categoryId,
     this.supplierId,
     this.stockQuantity = 0,
@@ -47,5 +47,10 @@ class Product {
       supplierId: map['supplier_id'],
       stockQuantity: map['stock_quantity'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'Product{id: $id, name: $name, description: $description, price: $price, weight: $weight, dimensions: $dimensions, categoryId: $categoryId, supplierId: $supplierId, stockQuantity: $stockQuantity}';
   }
 }
